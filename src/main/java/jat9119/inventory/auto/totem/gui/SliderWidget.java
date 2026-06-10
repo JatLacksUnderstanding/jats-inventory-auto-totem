@@ -31,7 +31,11 @@ public class SliderWidget extends AbstractSliderButton {
     }
 
     protected void updateMessage() {
-        this.setMessage(Component.literal(this.label + ": " + String.format(this.format, this.getRealValue())));
+        if(this.label.equals("Secondary Hotbar Slot") && value == 0) {
+            this.setMessage(Component.literal(this.label + " §cDisabled"));
+        } else {
+            this.setMessage(Component.literal(this.label + ": " + String.format(this.format, this.getRealValue())));
+        }
     }
 
     protected void applyValue() {

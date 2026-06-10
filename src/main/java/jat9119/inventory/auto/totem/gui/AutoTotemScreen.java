@@ -1,6 +1,7 @@
 package jat9119.inventory.auto.totem.gui;
 
 import jat9119.inventory.auto.totem.JatsInventoryAutoTotem;
+import jat9119.inventory.auto.totem.config.AutoTotemConfig;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;

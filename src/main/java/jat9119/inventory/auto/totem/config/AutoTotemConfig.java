@@ -1,4 +1,4 @@
-package jat9119.inventory.auto.totem.gui;
+package jat9119.inventory.auto.totem.config;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

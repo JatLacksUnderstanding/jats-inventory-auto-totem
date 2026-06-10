@@ -1,7 +1,7 @@
 package jat9119.inventory.auto.totem;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import jat9119.inventory.auto.totem.gui.AutoTotemConfig;
+import jat9119.inventory.auto.totem.config.AutoTotemConfig;
 import jat9119.inventory.auto.totem.gui.AutoTotemScreen;
 import jat9119.inventory.auto.totem.util.InventoryUtils;
 import net.fabricmc.api.ModInitializer;
