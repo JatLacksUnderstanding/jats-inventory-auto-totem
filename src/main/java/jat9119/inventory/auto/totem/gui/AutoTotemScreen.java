@@ -16,10 +16,21 @@ public class AutoTotemScreen extends Screen {
         int centerX = this.width / 2;
         int centerY = this.height / 2;
 
-        this.addRenderableWidget(Button.builder(Component.literal("Auto Totem " + (JatsInventoryAutoTotem.modEnabled ? "§aEnabled" : "§cDisabled")) , button -> {
+        this.addRenderableWidget(Button.builder(Component.literal("Auto Totem: " + (JatsInventoryAutoTotem.modEnabled ? "§aEnabled" : "§cDisabled")), button -> {
             JatsInventoryAutoTotem.modEnabled = !JatsInventoryAutoTotem.modEnabled;
             button.setMessage(Component.literal("Auto Totem " + (JatsInventoryAutoTotem.modEnabled ? "§aEnabled" : "§cDisabled")));
-        }).bounds(centerX - 75, centerY - 15, 150, 20).build());
+        }).bounds(centerX - 75, centerY - 40, 150, 20).build());
+
+        this.addRenderableWidget((Button.builder(Component.literal("Delay Type: " + (JatsInventoryAutoTotem.mixedDistributionDelayEnabled ? "Weighted Distribution" : "Uniform Distribution")), button -> {
+            JatsInventoryAutoTotem.mixedDistributionDelayEnabled = !JatsInventoryAutoTotem.mixedDistributionDelayEnabled;
+            button.setMessage(Component.literal("Delay Type: " + (JatsInventoryAutoTotem.mixedDistributionDelayEnabled ? "Weighted Distribution" : "Uniform Distribution")));
+        }).bounds(centerX - 100, centerY - 15, 200, 20).build()));
+
+        this.addRenderableWidget(Button.builder(Component.literal("Debug Messages: " + (JatsInventoryAutoTotem.debugMessagesEnabled ? "§aEnabled" : "§cDisabled")), button -> {
+            JatsInventoryAutoTotem.debugMessagesEnabled = !JatsInventoryAutoTotem.debugMessagesEnabled;
+            button.setMessage(Component.literal("Debug Messages " + (JatsInventoryAutoTotem.debugMessagesEnabled ? "§aEnabled" : "§cDisabled")));
+        }).bounds(centerX + 320, centerY + 220, 150, 20).build());
+
 
         this.addRenderableWidget(new SliderWidget(
                 centerX - 170,

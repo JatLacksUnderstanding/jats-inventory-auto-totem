@@ -15,6 +15,8 @@ public class AutoTotemConfig {
     private static final Path CONFIG_PATH = FabricLoader.getInstance().getConfigDir().resolve("jats-inventory-auto-totem.json");
 
     public boolean modEnabled = true;
+    public boolean debugMessagesEnabled = false;
+    public boolean mixedDistributionDelayEnabled = true;
     public int minDelayTicks = 1;
     public int maxDelayTicks = 4;
     public int hotbarSlotPrimary = 9;
@@ -30,6 +32,8 @@ public class AutoTotemConfig {
             AutoTotemConfig config = GSON.fromJson(reader, AutoTotemConfig.class);
 
             JatsInventoryAutoTotem.modEnabled = config.modEnabled;
+            JatsInventoryAutoTotem.debugMessagesEnabled = config.debugMessagesEnabled;
+            JatsInventoryAutoTotem.mixedDistributionDelayEnabled = config.mixedDistributionDelayEnabled;
             JatsInventoryAutoTotem.minDelayTicks = config.minDelayTicks;
             JatsInventoryAutoTotem.maxDelayTicks = config.maxDelayTicks;
             JatsInventoryAutoTotem.hotbarSlotPrimary = config.hotbarSlotPrimary;
@@ -43,6 +47,8 @@ public class AutoTotemConfig {
             AutoTotemConfig config = new AutoTotemConfig();
 
             config.modEnabled = JatsInventoryAutoTotem.modEnabled;
+            config.debugMessagesEnabled = JatsInventoryAutoTotem.debugMessagesEnabled;
+            config.mixedDistributionDelayEnabled = JatsInventoryAutoTotem.mixedDistributionDelayEnabled;
             config.minDelayTicks = JatsInventoryAutoTotem.minDelayTicks;
             config.maxDelayTicks = JatsInventoryAutoTotem.maxDelayTicks;
             config.hotbarSlotPrimary = JatsInventoryAutoTotem.hotbarSlotPrimary;

@@ -92,7 +92,7 @@ public class InventoryUtils {
 
     private static final Random random = new Random();
 
-    public static int randomDelay(Integer min, Integer max) {
+    public static int mixedDistributionDelay(Integer min, Integer max) {
         int lo = min, hi = max;
         if (hi <= lo) return lo;
 

@@ -16,6 +16,8 @@ import org.lwjgl.glfw.GLFW;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public class JatsInventoryAutoTotem implements ModInitializer {
 	public static final String MOD_ID = "jats-inventory-auto-totem";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
@@ -25,8 +27,10 @@ public class JatsInventoryAutoTotem implements ModInitializer {
 
 
 	public static boolean modEnabled = true;
-	private int tickDelay;
+	public static boolean debugMessagesEnabled = false;
+	public static boolean mixedDistributionDelayEnabled = true;
 
+	private int tickDelay;
 	public static int minDelayTicks = 1;
 	public static int maxDelayTicks = 4;
 
@@ -84,7 +88,23 @@ public class JatsInventoryAutoTotem implements ModInitializer {
 				return;
 			}
 			if (restock()) {
-				tickDelay = InventoryUtils.randomDelay(minDelayTicks, maxDelayTicks);
+				if (mixedDistributionDelayEnabled) {
+					tickDelay = InventoryUtils.mixedDistributionDelay(minDelayTicks, maxDelayTicks);
+				} else {
+					tickDelay = ThreadLocalRandom.current().nextInt(minDelayTicks, maxDelayTicks);
+				}
+
+				if (debugMessagesEnabled) {
+					client.player.sendSystemMessage(Component.literal(
+							"§6§l[Auto Totem] §r"
+									+ (JatsInventoryAutoTotem.mixedDistributionDelayEnabled ? "§bWeighted Distribution" : "§aUniform Distribution")
+									+ "§7. Random Delay: §e" + tickDelay
+									+ "§7 Ticks. Min: §e" + minDelayTicks
+									+ "§7 Max: §e" + maxDelayTicks
+									+ "§7 Slots: §d" + hotbarSlotPrimary
+									+ "§7 & §d" + hotbarSlotSecondary
+					));
+				}
 			}
 		});
 	}
