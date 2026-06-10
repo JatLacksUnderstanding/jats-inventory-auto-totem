@@ -1,6 +1,6 @@
 # Jats Inventory Auto Totem
 
-A simple mod that makes you good at toteming
+A simple mod that makes you good at toteming. Bypasses anti-cheats (GrimAC, TotemGuard, Vulcan, & Intave).
 
 Defualt menu bind Right Shift
 Defualt Toggle Bind F9
