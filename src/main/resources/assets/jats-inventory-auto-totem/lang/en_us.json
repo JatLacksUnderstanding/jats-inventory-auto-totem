@@ -1,0 +1,8 @@
+{
+  "key.category.jats-inventory-auto-totem.inventory_auto_totem": "Jat's Inventory Auto Totem",
+  "key.jats-inventory-auto-totem.toggle_bind": "Toggle Inventory Auto Totem",
+  "key.jats-inventory-auto-totem.open_gui": "Open Auto Totem GUI",
+
+  "key.jats-inventory-auto-totem.hot_key_primary": "Primary Hotbar Slot",
+  "key.jats-inventory-auto-totem.hot_key_secondary": "Secondary Hotbar Slot"
+}

@@ -1,0 +1,27 @@
+{
+	"schemaVersion": 1,
+	"id": "jats-inventory-auto-totem",
+	"version": "${version}",
+	"name": "Jats Inventory Auto Totem",
+	"description": "Toteming but gooder",
+	"authors": [
+		"Jat9119"
+	],
+	"license": "CC0-1.0",
+	"icon": "assets/jats-inventory-auto-totem/icon.png",
+	"environment": "client",
+	"entrypoints": {
+		"main": [
+			"jat9119.inventory.auto.totem.JatsInventoryAutoTotem"
+		]
+	},
+	"mixins": [
+		"jats-inventory-auto-totem.mixins.json"
+	],
+	"depends": {
+		"fabricloader": "*",
+		"minecraft": "26.x",
+		"java": ">=25",
+		"fabric-api": "*"
+	}
+}
