@@ -2,6 +2,7 @@ package jat9119.inventory.auto.totem.util;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 
 public class ItemSeachUtils {
     private final static Minecraft mc = Minecraft.getInstance();
@@ -18,9 +19,19 @@ public class ItemSeachUtils {
             9, 17, 27, 35
     };
 
-    public static int findClosestCenterItem (final Item item) {
+    public static int searchClosestCenterItem(final Item item) {
         for (int slot : CENTER_OUT_INDEXES) {
             if (mc.player.getInventory().getItem(slot).is(item)) {
+                return slot;
+            }
+        }
+        return -1;
+    }
+
+    public static int searchItem(final Item item) {
+        for (int slot = 0; slot <= 35; slot++) {
+            ItemStack stack = mc.player.getInventory().getItem(slot);
+            if (stack.is(item)) {
                 return slot;
             }
         }

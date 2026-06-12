@@ -33,8 +33,7 @@ public class AutoTotemScreen extends Screen {
         }).bounds(centerX + 320, centerY + 220, 150, 20).build());
 
 
-        this.addRenderableWidget(new SliderWidget(
-                centerX - 170,
+        this.addRenderableWidget(new SliderWidget(centerX - 170,
                 centerY + 20,
                 160,
                 20,
@@ -49,8 +48,7 @@ public class AutoTotemScreen extends Screen {
                     if (JatsInventoryAutoTotem.minDelayTicks > JatsInventoryAutoTotem.maxDelayTicks) {
                         JatsInventoryAutoTotem.maxDelayTicks = JatsInventoryAutoTotem.minDelayTicks + 1;
                     }
-                }
-        ));
+                }));
         this.addRenderableWidget(new SliderWidget(
                 centerX + 10,
                 centerY + 20 ,

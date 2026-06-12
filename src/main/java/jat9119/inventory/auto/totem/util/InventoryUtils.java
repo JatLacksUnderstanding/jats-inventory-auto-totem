@@ -12,6 +12,7 @@ import java.util.Random;
 public class InventoryUtils {
 
     private final static Minecraft mc = Minecraft.getInstance();
+    private static final Random random = new Random();
 
     public static boolean hotbarSlotHasItem(final Item item, final int targetSlot) {
         ItemStack stack = mc.player.getInventory().getItem(targetSlot);
@@ -24,42 +25,49 @@ public class InventoryUtils {
     }
 
     public static boolean offHandQuickMove(final Item item) {
-        int slot = ItemSeachUtils.findClosestCenterItem(item);
-
+        int slot = ItemSeachUtils.searchClosestCenterItem(item);
+        if (slot == -1) {
+            slot = ItemSeachUtils.searchItem(item);
+        }
         if (slot == -1) {
             return false;
         }
-        mc.gameMode.handleContainerInput(
-                mc.player.containerMenu.containerId,
-                slot,
-                40,
-                ContainerInput.SWAP,
-                mc.player
-        );
+        quickMoveItem(toInventoryIndex(slot), 40);
         return true;
     }
-
 
     public static boolean hotbarQuickMove(final Item item, final int targetSlot) {
-        int slot = ItemSeachUtils.findClosestCenterItem(item);
-
+        int slot = ItemSeachUtils.searchClosestCenterItem(item);
         if (slot == -1) {
             return false;
         }
-        mc.gameMode.handleContainerInput(
-                mc.player.containerMenu.containerId,
-                slot,
-                targetSlot,
-                ContainerInput.SWAP,
-                mc.player
-        );
+        quickMoveItem(slot, targetSlot);
         return true;
     }
 
+    public static boolean quickMoveItem(final int sourceSlot, final int targetSlot) {
+        mc.gameMode.handleContainerInput(mc.player.containerMenu.containerId,
+                sourceSlot,
+                targetSlot,
+                ContainerInput.SWAP,
+                mc.player);
+        return true;
+    }
 
     public static int inventoryItemCount(final Item item) {
         int itemCount = 0;
-        for (int slot = 9; slot < 36; slot++) {
+        for (int slot = 9; slot <= 35; slot++) {
+            ItemStack stack = mc.player.getInventory().getItem(slot);
+            if (stack.is(item)) {
+                itemCount++;
+            }
+        }
+        return itemCount;
+    }
+
+    public static int hotbarItemCount(final Item item) {
+        int itemCount = 0;
+        for (int slot = 0; slot <= 8; slot++) {
             ItemStack stack = mc.player.getInventory().getItem(slot);
             if (stack.is(item)) {
                 itemCount++;
@@ -83,14 +91,19 @@ public class InventoryUtils {
                 || stack.is(Items.BOW);
     }
 
-    public static int toHotbarIdex(final int setSlot) {
+    public static int toHotbarIndex(final int setSlot) {
         if (setSlot > 0) {
             return setSlot - 1;
         }
         return setSlot;
     }
 
-    private static final Random random = new Random();
+    public static int toInventoryIndex(final int slot) {
+        if (slot >= 0 && slot <= 8) {
+            return slot + 36;
+        }
+        return slot;
+    }
 
     public static int mixedDistributionDelay(Integer min, Integer max) {
         int lo = min, hi = max;

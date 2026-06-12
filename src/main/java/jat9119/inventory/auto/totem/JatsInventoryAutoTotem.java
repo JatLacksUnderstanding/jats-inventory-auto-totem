@@ -8,6 +8,7 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -19,122 +20,128 @@ import org.slf4j.LoggerFactory;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class JatsInventoryAutoTotem implements ModInitializer {
-	public static final String MOD_ID = "jats-inventory-auto-totem";
-	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+    public static final String MOD_ID = "jats-inventory-auto-totem";
+    public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
-	private KeyMapping toggleBind;
-	private KeyMapping openGuiBind;
+    private final static Minecraft mc = Minecraft.getInstance();
 
+    private KeyMapping toggleBind;
+    private KeyMapping openGuiBind;
 
-	public static boolean modEnabled = true;
-	public static boolean debugMessagesEnabled = false;
-	public static boolean mixedDistributionDelayEnabled = true;
+    public static boolean modEnabled = true;
+    public static boolean debugMessagesEnabled = false;
+    public static boolean mixedDistributionDelayEnabled = true;
 
-	private int tickDelay;
-	public static int minDelayTicks = 1;
-	public static int maxDelayTicks = 4;
+    private int tickDelay;
+    public static int minDelayTicks = 1;
+    public static int maxDelayTicks = 4;
 
-	public static int hotbarSlotPrimary = 8;
-	public static int hotbarSlotSecondary = 0;
-
-
-	private static final KeyMapping.Category INVENTORY_AUTO_TOTEM = KeyMapping.Category.register(Identifier.fromNamespaceAndPath(
-			MOD_ID,
-			"inventory_auto_totem"
-	));
-
-	@Override
-	public void onInitialize() {
-		AutoTotemConfig.load();
-
-		toggleBind = KeyMappingHelper.registerKeyMapping(new KeyMapping(
-				"key.jats-inventory-auto-totem.toggle_bind",
-				InputConstants.Type.KEYSYM,
-				GLFW.GLFW_KEY_F9,
-				INVENTORY_AUTO_TOTEM
-		));
-		openGuiBind = KeyMappingHelper.registerKeyMapping(new KeyMapping(
-				"key.jats-inventory-auto-totem.open_gui",
-				InputConstants.Type.KEYSYM,
-				GLFW.GLFW_KEY_RIGHT_SHIFT,
-				INVENTORY_AUTO_TOTEM
-		));
-
-		ClientTickEvents.END_CLIENT_TICK.register(client -> {
-
-			while (toggleBind.consumeClick()) {
-				modEnabled = !modEnabled;
-				client.player.sendSystemMessage(Component.literal("Auto Totem " + (modEnabled ? "§aEnabled" : "§cDisabled")));
-			}
-
-			while (openGuiBind.consumeClick()) {
-				client.setScreen(new AutoTotemScreen(client.screen));
-			}
+    public static int hotbarSlotPrimary = 8;
+    public static int hotbarSlotSecondary = 0;
 
 
-			if (client.player == null || client.player.gameMode() == null) {
-				return;
-			}
-			if (!(client.screen instanceof InventoryScreen)) {
-				return;
-			}
-			if (!modEnabled) {
-				return;
-			}
-			client.player.getInventory().setSelectedSlot(InventoryUtils.toHotbarIdex(hotbarSlotPrimary));
+    private static final KeyMapping.Category INVENTORY_AUTO_TOTEM = KeyMapping.Category.register(Identifier.fromNamespaceAndPath(
+            MOD_ID,
+            "inventory_auto_totem"
+    ));
 
-			if (tickDelay > 0) {
-				tickDelay--;
-				return;
-			}
-			if (restock()) {
-				if (mixedDistributionDelayEnabled) {
-					tickDelay = InventoryUtils.mixedDistributionDelay(minDelayTicks, maxDelayTicks);
-				} else {
-					tickDelay = ThreadLocalRandom.current().nextInt(minDelayTicks, maxDelayTicks);
-				}
+    @Override
+    public void onInitialize() {
+        AutoTotemConfig.load();
 
-				if (debugMessagesEnabled) {
-					client.player.sendSystemMessage(Component.literal(
-							"§6§l[Auto Totem] §r"
-									+ (JatsInventoryAutoTotem.mixedDistributionDelayEnabled ? "§bWeighted Distribution" : "§aUniform Distribution")
-									+ "§7. Random Delay: §e" + tickDelay
-									+ "§7 Ticks. Min: §e" + minDelayTicks
-									+ "§7 Max: §e" + maxDelayTicks
-									+ "§7 Slots: §d" + hotbarSlotPrimary
-									+ "§7 & §d" + hotbarSlotSecondary
-					));
-				}
-			}
-		});
-	}
+        toggleBind = KeyMappingHelper.registerKeyMapping(new KeyMapping(
+                "key.jats-inventory-auto-totem.toggle_bind",
+                InputConstants.Type.KEYSYM,
+                GLFW.GLFW_KEY_F9,
+                INVENTORY_AUTO_TOTEM
+        ));
+        openGuiBind = KeyMappingHelper.registerKeyMapping(new KeyMapping(
+                "key.jats-inventory-auto-totem.open_gui",
+                InputConstants.Type.KEYSYM,
+                GLFW.GLFW_KEY_RIGHT_SHIFT,
+                INVENTORY_AUTO_TOTEM
+        ));
 
-	public static boolean restock() {
-		if (InventoryUtils.inventoryItemCount(Items.TOTEM_OF_UNDYING) <= 0) {
-			return false;
-		}
+        ClientTickEvents.END_CLIENT_TICK.register(client -> {
 
-		int primarySlot = InventoryUtils.toHotbarIdex(hotbarSlotPrimary);
-		int secondarySlot = InventoryUtils.toHotbarIdex(hotbarSlotSecondary);
+            while (toggleBind.consumeClick()) {
+                modEnabled = !modEnabled;
+                client.player.sendSystemMessage(Component.literal("Auto Totem " + (modEnabled ? "§aEnabled" : "§cDisabled")));
+            }
+
+            while (openGuiBind.consumeClick()) {
+                client.setScreen(new AutoTotemScreen(client.screen));
+            }
 
 
-		if (!(InventoryUtils.offHandHasItem(Items.TOTEM_OF_UNDYING))) {
-			InventoryUtils.offHandQuickMove(Items.TOTEM_OF_UNDYING);
-			return true;
-		}
-		if (!(InventoryUtils.hotbarSlotHasItem(Items.TOTEM_OF_UNDYING, primarySlot))) {
-			InventoryUtils.hotbarQuickMove(Items.TOTEM_OF_UNDYING, primarySlot);
-			return true;
-		}
+            if (client.player == null || client.player.gameMode() == null) {
+                return;
+            }
+            if (!(client.screen instanceof InventoryScreen)) {
+                return;
+            }
+            if (!modEnabled) {
+                return;
+            }
+            client.player.getInventory().setSelectedSlot(InventoryUtils.toHotbarIndex(hotbarSlotPrimary));
 
-		if (hotbarSlotSecondary != 0 && !(InventoryUtils.ignoreQuickmoveItems(secondarySlot))
-				&& InventoryUtils.offHandHasItem(Items.TOTEM_OF_UNDYING)
-				&& InventoryUtils.hotbarSlotHasItem(Items.TOTEM_OF_UNDYING, primarySlot)
-				&& !InventoryUtils.hotbarSlotHasItem(Items.TOTEM_OF_UNDYING, secondarySlot)) {
+            if (tickDelay > 0) {
+                tickDelay--;
+                return;
+            }
+            if (restock()) {
+                if (mixedDistributionDelayEnabled) {
+                    tickDelay = InventoryUtils.mixedDistributionDelay(minDelayTicks, maxDelayTicks);
+                } else {
+                    if (maxDelayTicks > 1) {
+                        tickDelay = ThreadLocalRandom.current().nextInt(minDelayTicks, maxDelayTicks);
+                    } else {
+                        tickDelay = 1;
+                    }
+                }
 
-			InventoryUtils.hotbarQuickMove(Items.TOTEM_OF_UNDYING, secondarySlot);
-			return true;
-		}
+                if (debugMessagesEnabled) {
+                    client.player.sendSystemMessage(Component.literal(
+                            "§6§l[Auto Totem] §r"
+                                    + (JatsInventoryAutoTotem.mixedDistributionDelayEnabled ? "§bWeighted Distribution" : "§aUniform Distribution")
+                                    + "§7. Random Delay: §e" + tickDelay
+                                    + "§7 Ticks. Min: §e" + minDelayTicks
+                                    + "§7 Max: §e" + maxDelayTicks
+                                    + "§7 Slots: §d" + hotbarSlotPrimary
+                                    + "§7 & §d" + hotbarSlotSecondary
+                    ));
+                }
+            }
+        });
+    }
+
+    public static boolean restock() {
+        if (InventoryUtils.inventoryItemCount(Items.TOTEM_OF_UNDYING) <= 0
+                && InventoryUtils.hotbarItemCount(Items.TOTEM_OF_UNDYING) <= 0) {
+            return false;
+        }
+
+        int primarySlot = InventoryUtils.toHotbarIndex(hotbarSlotPrimary);
+        int secondarySlot = InventoryUtils.toHotbarIndex(hotbarSlotSecondary);
+
+
+        if (!(InventoryUtils.offHandHasItem(Items.TOTEM_OF_UNDYING))) {
+            InventoryUtils.offHandQuickMove(Items.TOTEM_OF_UNDYING);
+            return true;
+        }
+        if (!(InventoryUtils.hotbarSlotHasItem(Items.TOTEM_OF_UNDYING, primarySlot))) {
+            InventoryUtils.hotbarQuickMove(Items.TOTEM_OF_UNDYING, primarySlot);
+            return true;
+        }
+
+        if (hotbarSlotSecondary != 0 && !(InventoryUtils.ignoreQuickmoveItems(secondarySlot))
+                && InventoryUtils.offHandHasItem(Items.TOTEM_OF_UNDYING)
+                && InventoryUtils.hotbarSlotHasItem(Items.TOTEM_OF_UNDYING, primarySlot)
+                && !InventoryUtils.hotbarSlotHasItem(Items.TOTEM_OF_UNDYING, secondarySlot)) {
+
+            InventoryUtils.hotbarQuickMove(Items.TOTEM_OF_UNDYING, secondarySlot);
+            return true;
+        }
         return false;
     }
 }
