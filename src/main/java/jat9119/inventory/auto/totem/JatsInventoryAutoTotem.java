@@ -50,7 +50,7 @@ public class JatsInventoryAutoTotem implements ModInitializer, Global {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
 
             while (openGuiBind.consumeClick()) {
-                client.setScreen(new AutoTotemScreen(client.screen));
+                client.setScreenAndShow(new AutoTotemScreen(client.gui.screen()));
             }
 
             if (client.player == null || client.player.gameMode() == null) {
@@ -68,12 +68,12 @@ public class JatsInventoryAutoTotem implements ModInitializer, Global {
             }
 
             if (openInventory) {
-                client.setScreen(new InventoryScreen(client.player));
+                client.setScreenAndShow(new InventoryScreen(client.player));
                 openInventory = false;
                 return;
             }
 
-            if (!(client.screen instanceof InventoryScreen)) {
+            if (!(client.gui.screen() instanceof InventoryScreen)) {
                 return;
             }
 
