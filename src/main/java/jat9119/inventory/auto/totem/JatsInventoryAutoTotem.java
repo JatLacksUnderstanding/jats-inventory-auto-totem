@@ -53,13 +53,17 @@ public class JatsInventoryAutoTotem implements ModInitializer, Global {
                 client.setScreen(new AutoTotemScreen(client.screen));
             }
 
+            if (client.player == null || client.player.gameMode() == null) {
+                return;
+            }
+
             while (toggleBind.consumeClick()) {
                 modEnabled = !modEnabled;
                 client.player.sendSystemMessage(Component.literal("Auto Totem " + (modEnabled ? "§aEnabled" : "§cDisabled")));
             }
 
 
-            if (client.player == null || client.player.gameMode() == null || !modEnabled) {
+            if (!modEnabled) {
                 return;
             }
 
