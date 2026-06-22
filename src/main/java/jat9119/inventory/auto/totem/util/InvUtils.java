@@ -1,6 +1,6 @@
 package jat9119.inventory.auto.totem.util;
 
-import net.minecraft.client.Minecraft;
+import jat9119.inventory.auto.totem.Global;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.inventory.ContainerInput;
 import net.minecraft.world.item.Item;
@@ -9,9 +9,7 @@ import net.minecraft.world.item.Items;
 
 import java.util.Random;
 
-public class InventoryUtils {
-
-    private final static Minecraft mc = Minecraft.getInstance();
+public class InvUtils implements Global {
     private static final Random random = new Random();
 
     public static boolean hotbarSlotHasItem(final Item item, final int targetSlot) {
@@ -46,7 +44,8 @@ public class InventoryUtils {
     }
 
     public static boolean quickMoveItem(final int sourceSlot, final int targetSlot) {
-        mc.gameMode.handleContainerInput(mc.player.containerMenu.containerId,
+        mc.gameMode.handleContainerInput(
+                mc.player.containerMenu.containerId,
                 sourceSlot,
                 targetSlot,
                 ContainerInput.SWAP,

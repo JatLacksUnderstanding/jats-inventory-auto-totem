@@ -3,12 +3,12 @@
 	"id": "jats-inventory-auto-totem",
 	"version": "${version}",
 	"name": "Jats Inventory Auto Totem",
-	"description": "Toteming but gooder",
+	"description": "Automatically equips totems while your inventory is open. Tested with GrimAC, TotemGuard, Vulcan, and Intave.",
 	"authors": [
 		"Jat9119"
 	],
-	"license": "CC0-1.0",
-	"icon": "assets/jats-inventory-auto-totem/icon.png",
+	"license": "MIT",
+	"icon": "assets/jats-inventory-auto-totem/lang/icon.png",
 	"environment": "client",
 	"entrypoints": {
 		"main": [
