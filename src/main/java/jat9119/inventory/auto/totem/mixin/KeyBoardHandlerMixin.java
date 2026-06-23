@@ -14,13 +14,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(KeyboardHandler.class)
 public class KeyBoardHandlerMixin implements Global {
     @Inject(at = @At("HEAD"), method = "keyPress", cancellable = true)
-    private void keyPress(long handle, int action, KeyEvent keyEvent, CallbackInfo ci) {
-
+    private void KeyPress(long handle, int action, KeyEvent keyEvent, CallbackInfo ci) {
         if (action != InputConstants.PRESS) {
             return;
         }
 
-        if (mc.player != null && mc.gui.screen() == null && JatsInventoryAutoTotem.modEnabled) {
+        if (mc.player != null && mc.gui.screen() == null) {
             int selectedHotbarSlot = mc.player.getInventory().getSelectedSlot();
             if (mc.options.keyInventory.matches(keyEvent)) {
                 if (selectedHotbarSlot != InvUtils.toHotbarIndex(JatsInventoryAutoTotem.hotbarSlotPrimary)) {
