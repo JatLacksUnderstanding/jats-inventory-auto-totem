@@ -1,11 +1,10 @@
-package jat9119.inventory.auto.totem.util;
+package jat9119.inventory.auto.totem.inventory;
 
 import jat9119.inventory.auto.totem.Global;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
-public class ItemSeachUtils implements Global {
-
+public class InventorySearch implements Global {
     private static final int[] CENTER_OUT_INDEXES = {
             22, 21, 23,
             13, 31,

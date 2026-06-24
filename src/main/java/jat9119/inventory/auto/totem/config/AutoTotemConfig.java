@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import jat9119.inventory.auto.totem.Global;
 import jat9119.inventory.auto.totem.JatsInventoryAutoTotem;
+import jat9119.inventory.auto.totem.client.Settings;
 import net.fabricmc.loader.api.FabricLoader;
 
 import java.io.Reader;
@@ -32,13 +33,13 @@ public class AutoTotemConfig implements Global {
         try (Reader reader = Files.newBufferedReader(CONFIG_PATH)) {
             AutoTotemConfig config = GSON.fromJson(reader, AutoTotemConfig.class);
 
-            JatsInventoryAutoTotem.modEnabled = config.modEnabled;
-            JatsInventoryAutoTotem.debugMessagesEnabled = config.debugMessagesEnabled;
-            JatsInventoryAutoTotem.mixedDistributionDelayEnabled = config.mixedDistributionDelayEnabled;
-            JatsInventoryAutoTotem.minDelayTicks = config.minDelayTicks;
-            JatsInventoryAutoTotem.maxDelayTicks = config.maxDelayTicks;
-            JatsInventoryAutoTotem.hotbarSlotPrimary = config.hotbarSlotPrimary;
-            JatsInventoryAutoTotem.hotbarSlotSecondary = config.hotbarSlotSecondary;
+            Settings.modEnabled = config.modEnabled;
+            Settings.debugMessagesEnabled = config.debugMessagesEnabled;
+            Settings.mixedDistributionDelayEnabled = config.mixedDistributionDelayEnabled;
+            Settings.minDelayTicks = config.minDelayTicks;
+            Settings.maxDelayTicks = config.maxDelayTicks;
+            Settings.hotbarSlotPrimary = config.hotbarSlotPrimary;
+            Settings.hotbarSlotSecondary = config.hotbarSlotSecondary;
         } catch (Exception exception) {
             LOGGER.warn(String.valueOf(exception));
         }
@@ -48,13 +49,13 @@ public class AutoTotemConfig implements Global {
         try {
             AutoTotemConfig config = new AutoTotemConfig();
 
-            config.modEnabled = JatsInventoryAutoTotem.modEnabled;
-            config.debugMessagesEnabled = JatsInventoryAutoTotem.debugMessagesEnabled;
-            config.mixedDistributionDelayEnabled = JatsInventoryAutoTotem.mixedDistributionDelayEnabled;
-            config.minDelayTicks = JatsInventoryAutoTotem.minDelayTicks;
-            config.maxDelayTicks = JatsInventoryAutoTotem.maxDelayTicks;
-            config.hotbarSlotPrimary = JatsInventoryAutoTotem.hotbarSlotPrimary;
-            config.hotbarSlotSecondary = JatsInventoryAutoTotem.hotbarSlotSecondary;
+            config.modEnabled = Settings.modEnabled;
+            config.debugMessagesEnabled = Settings.debugMessagesEnabled;
+            config.mixedDistributionDelayEnabled = Settings.mixedDistributionDelayEnabled;
+            config.minDelayTicks = Settings.minDelayTicks;
+            config.maxDelayTicks = Settings.maxDelayTicks;
+            config.hotbarSlotPrimary = Settings.hotbarSlotPrimary;
+            config.hotbarSlotSecondary = Settings.hotbarSlotSecondary;
 
             Files.createDirectories(CONFIG_PATH.getParent());
 
