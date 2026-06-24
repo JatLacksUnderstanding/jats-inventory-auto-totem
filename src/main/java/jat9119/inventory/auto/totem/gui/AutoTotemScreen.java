@@ -8,10 +8,12 @@ import net.minecraft.network.chat.Component;
 
 public class AutoTotemScreen extends Screen {
     private final Screen parent;
+
     public AutoTotemScreen(Screen parent) {
         super(Component.literal("AutoTotem Settings"));
         this.parent = parent;
     }
+
     @Override
     protected void init() {
         int centerX = this.width / 2;
@@ -51,7 +53,7 @@ public class AutoTotemScreen extends Screen {
                 }));
         this.addRenderableWidget(new SliderWidget(
                 centerX + 10,
-                centerY + 20 ,
+                centerY + 20,
                 160,
                 20,
                 "Maximum Delay In Ticks",
@@ -94,15 +96,18 @@ public class AutoTotemScreen extends Screen {
     public void onClose() {
         this.minecraft.setScreenAndShow(parent);
     }
+
     @Override
     public boolean shouldCloseOnEsc() {
-       this.onClose();
-       return true;
+        this.onClose();
+        return true;
     }
+
     @Override
     public void removed() {
         AutoTotemConfig.save();
     }
+
     @Override
     public boolean isPauseScreen() {
         return false;
