@@ -2,8 +2,9 @@ package jat9119.inventory.auto.totem.mixin;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import jat9119.inventory.auto.totem.Global;
-import jat9119.inventory.auto.totem.JatsInventoryAutoTotem;
-import jat9119.inventory.auto.totem.util.InvUtils;
+import jat9119.inventory.auto.totem.client.Settings;
+import jat9119.inventory.auto.totem.inventory.OpenInventoryRequest;
+import jat9119.inventory.auto.totem.inventory.SlotConversion;
 import net.minecraft.client.KeyboardHandler;
 import net.minecraft.client.input.KeyEvent;
 import org.spongepowered.asm.mixin.Mixin;
@@ -19,13 +20,13 @@ public class KeyBoardHandlerMixin implements Global {
             return;
         }
 
-        if (mc.player != null && mc.gui.screen() == null) {
+        if (mc.player != null && mc.gui.screen() == null && Settings.modEnabled) {
             int selectedHotbarSlot = mc.player.getInventory().getSelectedSlot();
             if (mc.options.keyInventory.matches(keyEvent)) {
-                if (selectedHotbarSlot != InvUtils.toHotbarIndex(JatsInventoryAutoTotem.hotbarSlotPrimary)) {
+                if (selectedHotbarSlot != SlotConversion.toHotbarIndex(Settings.hotbarSlotPrimary)) {
                     ci.cancel();
-                    mc.player.getInventory().setSelectedSlot(InvUtils.toHotbarIndex(JatsInventoryAutoTotem.hotbarSlotPrimary));
-                    JatsInventoryAutoTotem.openInventory = true;
+                    mc.player.getInventory().setSelectedSlot(SlotConversion.toHotbarIndex(Settings.hotbarSlotPrimary));
+                    OpenInventoryRequest.request();
                 }
             }
         }
