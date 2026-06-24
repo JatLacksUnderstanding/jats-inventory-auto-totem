@@ -21,7 +21,7 @@ public class KeyBoardHandlerMixin implements Global {
             return;
         }
 
-        if (mc.player != null && mc.screen == null && Settings.modEnabled) {
+        if (mc.player != null && mc.gui.screen() == null && Settings.modEnabled) {
             int selectedHotbarSlot = mc.player.getInventory().getSelectedSlot();
             if (mc.options.keyInventory.matches(keyEvent)) {
                 if (selectedHotbarSlot != SlotConversion.toHotbarIndex(Settings.hotbarSlotPrimary)) {

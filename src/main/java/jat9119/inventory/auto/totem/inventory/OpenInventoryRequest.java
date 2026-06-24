@@ -7,7 +7,7 @@ import net.minecraft.network.chat.Component;
 public final class OpenInventoryRequest implements Global {
 
     public static void request() {
-        mc.setScreen(new InventoryScreen(mc.player));
+        mc.setScreenAndShow(new InventoryScreen(mc.player));
         mc.player.sendSystemMessage(Component.literal("e"));
     }
 }

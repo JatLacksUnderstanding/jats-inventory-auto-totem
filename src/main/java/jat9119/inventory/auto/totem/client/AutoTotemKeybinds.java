@@ -36,7 +36,7 @@ public class AutoTotemKeybinds implements Global {
 
     public void handleTick(Minecraft client) {
         while (openGuiBind.consumeClick()) {
-            client.setScreen(new AutoTotemScreen(client.screen));
+            client.setScreenAndShow(new AutoTotemScreen(client.gui.screen()));
         }
 
 

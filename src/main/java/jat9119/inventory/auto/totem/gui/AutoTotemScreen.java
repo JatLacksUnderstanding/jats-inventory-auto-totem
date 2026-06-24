@@ -1,6 +1,5 @@
 package jat9119.inventory.auto.totem.gui;
 
-import jat9119.inventory.auto.totem.JatsInventoryAutoTotem;
 import jat9119.inventory.auto.totem.client.Settings;
 import jat9119.inventory.auto.totem.config.AutoTotemConfig;
 import net.minecraft.client.gui.components.Button;
@@ -93,7 +92,7 @@ public class AutoTotemScreen extends Screen {
 
     @Override
     public void onClose() {
-        this.minecraft.setScreen(parent);
+        this.minecraft.setScreenAndShow(parent);
     }
     @Override
     public boolean shouldCloseOnEsc() {

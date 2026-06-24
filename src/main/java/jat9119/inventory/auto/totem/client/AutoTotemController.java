@@ -24,7 +24,7 @@ public class AutoTotemController implements Global {
 
         if (client.player == null || client.player.gameMode() == null) return;
         if (!Settings.modEnabled) return;
-        if (!(client.screen instanceof InventoryScreen)) return;
+        if (!(client.gui.screen() instanceof InventoryScreen)) return;
         if (delay.shouldWait()) return;
 
         if (restocker.restock()) {
